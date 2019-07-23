@@ -72,7 +72,7 @@ rws_read_meta <- function(conn) {
 data_column_meta <- function(column) {
   if (is.logical(column)) return("class: logical")
   if (is.Date(column)) return("class: Date")
-  if (is.hms(column)) return("class: hms")
+  if (is_hms(column)) return("class: hms")
   if (is.POSIXct(column)) return(p("tz:", dttr2::dtt_tz(column)))
   if (is.sfc(column)) return(p("proj:", sf::st_crs(column)$proj4string))
   if (is.units(column)) return(p("units:", units::deparse_unit(column)))
@@ -92,7 +92,7 @@ read_meta_levels <- function(x) {
 read_meta_data_column <- function(column, meta) {
   if(grepl("^class:\\s*logical$", meta)) return(as.logical(column))
   if(grepl("^class:\\s*Date$", meta)) return(dttr2::dtt_date(column))
-  if(grepl("^class:\\s*hms$", meta)) return(as.hms(column))
+  if(grepl("^class:\\s*hms$", meta)) return(as_hms(column))
   if(grepl("^tz:", meta)) {
     tz <- sub("(^tz:\\s*)(.*)", "\\2", meta)
     return(dttr2::dtt_date_time(column, tz = tz))

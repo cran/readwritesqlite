@@ -4,17 +4,27 @@
 \alias{rws_write.data.frame}
 \title{Write a Data Frame to a SQLite Database}
 \usage{
-\method{rws_write}{data.frame}(x, exists = TRUE, delete = FALSE,
-  replace = FALSE, meta = TRUE, log = TRUE, commit = TRUE,
-  strict = TRUE, x_name = substitute(x),
-  silent = getOption("rws.silent", FALSE), conn, ...)
+\method{rws_write}{data.frame}(
+  x,
+  exists = TRUE,
+  delete = FALSE,
+  replace = FALSE,
+  meta = TRUE,
+  log = TRUE,
+  commit = TRUE,
+  strict = TRUE,
+  x_name = substitute(x),
+  silent = getOption("rws.silent", FALSE),
+  conn,
+  ...
+)
 }
 \arguments{
 \item{x}{A data frame.}
 
 \item{exists}{A flag specifying whether the table(s) must already exist.}
 
-\item{delete}{A flag specifying whether to delete existing rows before 
+\item{delete}{A flag specifying whether to delete existing rows before
 inserting data. If \code{meta = TRUE} the meta data is deleted.}
 
 \item{replace}{A flag specifying whether to replace any existing rows whose inclusion would violate unique or primary key constraints.}
@@ -23,7 +33,7 @@ inserting data. If \code{meta = TRUE} the meta data is deleted.}
 
 \item{log}{A flag specifying whether to log the table operations.}
 
-\item{commit}{A flag specifying whether to commit the operations 
+\item{commit}{A flag specifying whether to commit the operations
 (calling with commit = FALSE can be useful for checking data).}
 
 \item{strict}{A flag specifying whether to error if x has extraneous columns or if exists = TRUE extraneous data frames.}
@@ -32,7 +42,7 @@ inserting data. If \code{meta = TRUE} the meta data is deleted.}
 
 \item{silent}{A flag specifying whether to suppress messages and warnings.}
 
-\item{conn}{A \code{\linkS4class{SQLiteConnection}} to a database.}
+\item{conn}{A \linkS4class{SQLiteConnection} to a database.}
 
 \item{...}{Not used.}
 }
@@ -48,7 +58,9 @@ rws_list_tables(conn)
 rws_disconnect(conn)
 }
 \seealso{
-Other rws_write: \code{\link{rws_write.environment}},
-  \code{\link{rws_write.list}}, \code{\link{rws_write}}
+Other rws_write: 
+\code{\link{rws_write.environment}()},
+\code{\link{rws_write.list}()},
+\code{\link{rws_write}()}
 }
 \concept{rws_write}

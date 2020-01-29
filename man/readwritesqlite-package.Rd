@@ -6,12 +6,12 @@
 \alias{readwritesqlite-package}
 \title{readwritesqlite: Enhanced Reading and Writing for 'SQLite' Databases}
 \description{
-Reads and writes data frames to 'SQLite' databases while 
-  preserving time zones (for POSIXct columns), 
-  projections (for 'sfc' columns), units (for 'units' columns), 
-  levels (for factors and ordered factors) and classes for 
-  logical, Date and 'hms' columns.
-  It also logs changes to tables and provides more informative error messages.
+Reads and writes data frames to 'SQLite'
+    databases while preserving time zones (for POSIXct columns),
+    projections (for 'sfc' columns), units (for 'units' columns), levels
+    (for factors and ordered factors) and classes for logical, Date and
+    'hms' columns.  It also logs changes to tables and provides more
+    informative error messages.
 }
 \seealso{
 Useful links:
@@ -22,10 +22,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Joe Thorley \email{joe@poissonconsulting.ca} (0000-0002-7683-4592)
+\strong{Maintainer}: Joe Thorley \email{joe@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
 
 Other contributors:
 \itemize{
+  \item Sebastian Dalgarno \email{seb@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-3658-4517}{ORCID}) [contributor]
   \item Poisson Consulting [copyright holder, funder]
 }
 

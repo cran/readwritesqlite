@@ -11,7 +11,7 @@ rws_describe_meta(x, ..., conn)
 
 \item{...}{Not used.}
 
-\item{conn}{A \code{\linkS4class{SQLiteConnection}} to a database.}
+\item{conn}{A \linkS4class{SQLiteConnection} to a database.}
 }
 \value{
 An invisible copy of the updated meta table.
@@ -20,6 +20,7 @@ An invisible copy of the updated meta table.
 Add Descriptions to SQL Meta Data Table
 }
 \seealso{
-Other rws_describe_meta: \code{\link{rws_describe_meta.character}}
+Other rws_describe_meta: 
+\code{\link{rws_describe_meta.character}()}
 }
 \concept{rws_describe_meta}

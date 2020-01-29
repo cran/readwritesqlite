@@ -1,10 +1,12 @@
 context("connection")
 
 test_that("rws_connect", {
-  expect_error(rws_connect(":memory:", exists = TRUE),
-               "File ':memory:' must already exist.")
+  expect_error(
+    rws_connect(":memory:", exists = TRUE),
+    "File ':memory:' must already exist."
+  )
   conn <- rws_connect(":memory:")
-  expect_identical(check_sqlite_connection(conn, connected = TRUE), conn)
+  expect_true(vld_sqlite_conn(conn, connected = TRUE))
   rws_disconnect(conn)
-  expect_identical(check_sqlite_connection(conn, connected = FALSE), conn)
+  expect_true(vld_sqlite_conn(conn, connected = FALSE))
 })

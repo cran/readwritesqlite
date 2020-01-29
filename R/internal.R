@@ -1,3 +1,33 @@
+st_sf <- function(data, sf_column_name = NULL,
+                  stringsAsFactors = FALSE, sfc_last = TRUE) {
+  if (!requireNamespace("sf")) err("Package 'sf' must be installed.")
+  sf::st_sf(data,
+    sf_column_name = sf_column_name,
+    stringsAsFactors = stringsAsFactors, sfc_last = sfc_last
+  )
+}
+
+as_Date <- function(x) as.Date(x, origin = as.Date("1970-01-01"))
+
+as_POSIXct <- function(x, tz) {
+  as.POSIXct(x, tz = tz, origin = as.POSIXct("1970-01-01",
+    tz = "GMT"
+  ))
+}
+
+is.Date <- function(x) inherits(x, "Date")
+
+is.POSIXct <- function(x) inherits(x, "POSIXct")
+
+tz <- function(x) {
+  tz <- attr(x, "tzone")
+  if (is.null(tz) || identical(tz, "")) {
+    return(Sys.timezone())
+  }
+  tz
+}
+
+
 sys_date_time_utc <- function() {
   date_time <- Sys.time()
   attr(date_time, "tzone") <- "UTC"
@@ -8,18 +38,12 @@ user <- function() {
   unname(Sys.info()["user"])
 }
 
-set_class <- function(x, value) {
-  class(x) <- value
-  x
-}
-
 as_tibble_sf <- function(x) {
   sf_column_name <- sf_column_name(x)
-    x <- tibble::as_tibble(x)
-    if(!is.na(sf_column_name)) {
-      x <- sf::st_sf(x, sf_column_name = sf_column_name, 
-                     stringsAsFactors = FALSE)
-    }
+  x <- tibble::as_tibble(x)
+  if (!is.na(sf_column_name)) {
+    x <- st_sf(x, sf_column_name = sf_column_name, stringsAsFactors = FALSE)
+  }
   x
 }
 
@@ -42,9 +66,13 @@ reserved_tables <- function() {
 }
 
 sf_column_name <- function(x) {
-  if(!is.sf(x)) return(NA_character_)
+  if (!is.sf(x)) {
+    return(NA_character_)
+  }
   x <- attr(x, "sf_column")
-  if(is.null(x)) return(NA_character_)
+  if (is.null(x)) {
+    return(NA_character_)
+  }
   x
 }
 

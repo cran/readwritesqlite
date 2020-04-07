@@ -1,3 +1,7 @@
+# readwritesqlite 0.1.1
+
+- Fix failing CRAN tests with latest sf (>= 0.9.1)
+
 # readwritesqlite 0.1.0
 
 ## New Features

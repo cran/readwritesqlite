@@ -12,20 +12,23 @@
 
 <meta name="author" content="Joe Thorley" />
 
-<meta name="date" content="2020-04-07" />
+<meta name="date" content="2020-07-13" />
 
 <title>Using readwritesqlite</title>
 
-<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
-// be compatible with the behavior of Pandoc < 2.8).
-document.addEventListener('DOMContentLoaded', function(e) {
-  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
-  var i, h, a;
-  for (i = 0; i < hs.length; i++) {
-    h = hs[i];
-    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
-    a = h.attributes;
-    while (a.length > 0) h.removeAttribute(a[0].name);
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
   }
 });
 </script>
@@ -33,18 +36,19 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -64,7 +68,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -315,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Using readwritesqlite</h1>
 <h4 class="author">Joe Thorley</h4>
-<h4 class="date">2020-04-07</h4>
+<h4 class="date">2020-07-13</h4>
 
 
 
@@ -331,7 +335,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Individual data frames, environments or named lists of data frames can be written to a connection using <code>rws_write()</code>.</p>
 <p>In the case of a data frame the default table name is the name of the object (an alternative name can be specified using the <code>x_name</code> argument).</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">rws_write</span>(rws_data, <span class="dt">exists =</span> <span class="ot">FALSE</span>, <span class="dt">conn =</span> conn)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; Loading required namespace: sf</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; Loading required namespace: units</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="kw">rws_list_tables</span>(conn)</span>
 <span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; [1] &quot;rws_data&quot;</span></span></code></pre></div>
 <p>The fact that <code>rws_write()</code> accepts environments means that the user can easily write all the data frames in the current environment to a SQLiteConnection.</p>
@@ -386,51 +390,38 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-2"><a href="#cb4-2"></a><span class="kw">names</span>(tables)</span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; [1] &quot;a_table&quot;       &quot;another_table&quot; &quot;rws_data&quot;</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a>tables<span class="op">$</span>rws_data</span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; Simple feature collection with 3 features and 6 fields</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; geometry type:  POINT</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; dimension:      XY</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; bbox:           xmin: 0 ymin: 0 xmax: 1 ymax: 1</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; CRS:            +proj=longlat +datum=WGS84 +no_defs </span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; # A tibble: 3 x 7</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt;   logical date       factor ordered posixct             units    geometry</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;   &lt;lgl&gt;   &lt;date&gt;     &lt;fct&gt;  &lt;ord&gt;   &lt;dttm&gt;                [m] &lt;POINT [°]&gt;</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; 1 TRUE    2000-01-01 x      x       2001-01-02 03:04:05  10.0       (0 1)</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; 2 FALSE   2001-02-03 y      y       2006-07-08 09:10:11  11.5       (1 0)</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; 3 NA      NA         &lt;NA&gt;   &lt;NA&gt;    NA                     NA       (1 1)</span></span></code></pre></div>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; # A tibble: 3 x 6</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt;   logical date       factor ordered posixct             units</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;   &lt;lgl&gt;   &lt;date&gt;     &lt;fct&gt;  &lt;ord&gt;   &lt;dttm&gt;                [m]</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; 1 TRUE    2000-01-01 x      x       2001-01-02 03:04:05  10.0</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; 2 FALSE   2001-02-03 y      y       2006-07-08 09:10:11  11.5</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; 3 NA      NA         &lt;NA&gt;   &lt;NA&gt;    NA                     NA</span></span></code></pre></div>
 <p>The table names can of course be manipulated and <code>list2env()</code> used to assign the data frames to the current environment.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">names</span>(tables) &lt;-<span class="st"> </span><span class="kw">toupper</span>(<span class="kw">names</span>(tables))</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="kw">list2env</span>(tables, <span class="kw">environment</span>())</span></code></pre></div>
 <p>If the user wishes to read a single data frame they can use <code>rws_read_table()</code></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">rws_read_table</span>(<span class="st">&quot;rws_data&quot;</span>, <span class="dt">conn =</span> conn)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Simple feature collection with 3 features and 6 fields</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; geometry type:  POINT</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; dimension:      XY</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; bbox:           xmin: 0 ymin: 0 xmax: 1 ymax: 1</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; CRS:            +proj=longlat +datum=WGS84 +no_defs </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; # A tibble: 3 x 7</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;   logical date       factor ordered posixct             units    geometry</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;   &lt;lgl&gt;   &lt;date&gt;     &lt;fct&gt;  &lt;ord&gt;   &lt;dttm&gt;                [m] &lt;POINT [°]&gt;</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; 1 TRUE    2000-01-01 x      x       2001-01-02 03:04:05  10.0       (0 1)</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; 2 FALSE   2001-02-03 y      y       2006-07-08 09:10:11  11.5       (1 0)</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; 3 NA      NA         &lt;NA&gt;   &lt;NA&gt;    NA                     NA       (1 1)</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; # A tibble: 3 x 6</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt;   logical date       factor ordered posixct             units</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;   &lt;lgl&gt;   &lt;date&gt;     &lt;fct&gt;  &lt;ord&gt;   &lt;dttm&gt;                [m]</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; 1 TRUE    2000-01-01 x      x       2001-01-02 03:04:05  10.0</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; 2 FALSE   2001-02-03 y      y       2006-07-08 09:10:11  11.5</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 3 NA      NA         &lt;NA&gt;   &lt;NA&gt;    NA                     NA</span></span></code></pre></div>
 <p>The <code>rws_read_meta()</code> and <code>rws_read_log()</code> allow the user to read the meta and log tables.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">rws_read_meta</span>(conn)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt; # A tibble: 13 x 4</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;    TableMeta     ColumnMeta MetaMeta                             DescriptionMeta</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;                                &lt;chr&gt;          </span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;  1 ANOTHER_TABLE FACTOR     &quot;factor: &#39;x&#39;, &#39;y&#39;&quot;                   &lt;NA&gt;           </span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  2 ANOTHER_TABLE GEOMETRY   &quot;proj: +proj=longlat +datum=WGS84 +… &lt;NA&gt;           </span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  3 ANOTHER_TABLE ORDERED    &quot;ordered: &#39;y&#39;, &#39;x&#39;&quot;                  &lt;NA&gt;           </span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt;  4 A_TABLE       DATE       &quot;class: Date&quot;                        &lt;NA&gt;           </span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt;  5 A_TABLE       GEOMETRY   &quot;proj: +proj=longlat +datum=WGS84 +… &lt;NA&gt;           </span></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;  6 A_TABLE       LOGICAL    &quot;class: logical&quot;                     &lt;NA&gt;           </span></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt;  7 RWS_DATA      DATE       &quot;class: Date&quot;                        &lt;NA&gt;           </span></span>
-<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt;  8 RWS_DATA      FACTOR     &quot;factor: &#39;x&#39;, &#39;y&#39;&quot;                   &lt;NA&gt;           </span></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt;  9 RWS_DATA      GEOMETRY   &quot;proj: +proj=longlat +datum=WGS84 +… &lt;NA&gt;           </span></span>
-<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt; 10 RWS_DATA      LOGICAL    &quot;class: logical&quot;                     &lt;NA&gt;           </span></span>
-<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; 11 RWS_DATA      ORDERED    &quot;ordered: &#39;y&#39;, &#39;x&#39;&quot;                  &lt;NA&gt;           </span></span>
-<span id="cb7-16"><a href="#cb7-16"></a><span class="co">#&gt; 12 RWS_DATA      POSIXCT    &quot;tz: Etc/GMT+8&quot;                      &lt;NA&gt;           </span></span>
-<span id="cb7-17"><a href="#cb7-17"></a><span class="co">#&gt; 13 RWS_DATA      UNITS      &quot;units: m&quot;                           &lt;NA&gt;</span></span></code></pre></div>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt; # A tibble: 10 x 4</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;    TableMeta     ColumnMeta MetaMeta          DescriptionMeta</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;             &lt;chr&gt;          </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;  1 ANOTHER_TABLE FACTOR     factor: &#39;x&#39;, &#39;y&#39;  &lt;NA&gt;           </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  2 ANOTHER_TABLE ORDERED    ordered: &#39;y&#39;, &#39;x&#39; &lt;NA&gt;           </span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  3 A_TABLE       DATE       class: Date       &lt;NA&gt;           </span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt;  4 A_TABLE       LOGICAL    class: logical    &lt;NA&gt;           </span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt;  5 RWS_DATA      DATE       class: Date       &lt;NA&gt;           </span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;  6 RWS_DATA      FACTOR     factor: &#39;x&#39;, &#39;y&#39;  &lt;NA&gt;           </span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt;  7 RWS_DATA      LOGICAL    class: logical    &lt;NA&gt;           </span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt;  8 RWS_DATA      ORDERED    ordered: &#39;y&#39;, &#39;x&#39; &lt;NA&gt;           </span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt;  9 RWS_DATA      POSIXCT    tz: Etc/GMT+8     &lt;NA&gt;           </span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt; 10 RWS_DATA      UNITS      units: m          &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">rws_read_log</span>(conn)</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; # A tibble: 6 x 5</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt;   DateTimeUTCLog      UserLog TableLog      CommandLog NRowLog</span></span>

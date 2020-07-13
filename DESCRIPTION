@@ -1,6 +1,6 @@
 Package: readwritesqlite
 Title: Enhanced Reading and Writing for 'SQLite' Databases
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", c("aut", "cre"), comment = c(ORCID = "0000-0002-7683-4592")),
     person("Sebastian", "Dalgarno", , "seb@poissonconsulting.ca", "ctb", comment = c(ORCID = "0000-0002-3658-4517")),
@@ -13,22 +13,22 @@ Description: Reads and writes data frames to 'SQLite'
     'hms' columns.  It also logs changes to tables and provides more
     informative error messages.
 License: MIT + file LICENSE
-Depends: R (>= 3.4)
-Imports: chk, hms, DBI, RSQLite, lifecycle, tibble
-Suggests: covr, testthat, knitr, rmarkdown, units, sf
 URL: https://github.com/poissonconsulting/readwritesqlite
 BugReports: https://github.com/poissonconsulting/readwritesqlite/issues
+Depends: R (>= 3.6)
+Imports: chk, hms, DBI, RSQLite, lifecycle, tibble
+Suggests: covr, pool, testthat, knitr, rmarkdown, units, sf
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1.9000
 NeedsCompilation: no
-Packaged: 2020-04-07 14:50:56 UTC; joe
+Packaged: 2020-07-13 15:05:55 UTC; joe
 Author: Joe Thorley [aut, cre] (<https://orcid.org/0000-0002-7683-4592>),
   Sebastian Dalgarno [ctb] (<https://orcid.org/0000-0002-3658-4517>),
   Poisson Consulting [cph, fnd]
 Maintainer: Joe Thorley <joe@poissonconsulting.ca>
 Repository: CRAN
-Date/Publication: 2020-04-07 15:40:07 UTC
+Date/Publication: 2020-07-13 17:00:06 UTC

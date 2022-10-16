@@ -1,9 +1,6 @@
-context("init")
-
 test_that("init makes table", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
-
+  conn <- local_conn()
+  
   expect_identical(
     rws_read_init(conn = conn),
     tibble::tibble(
@@ -101,8 +98,8 @@ test_that("init makes table", {
 
 #
 # test_that("sfc data frames stays sfc even if sf written", {
-#   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#   teardown(DBI::dbDisconnect(conn))
+# 
+#   conn <- local_conn()
 #
 #   local <- rws_data_sf
 #   expect_identical(rws_write(local, exists = NA, conn = conn), "local")
@@ -124,8 +121,8 @@ test_that("init makes table", {
 # })
 #
 # test_that("sfc data frames stays sf even if sfc written", {
-#   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#   teardown(DBI::dbDisconnect(conn))
+# 
+#   conn <- local_conn()
 #
 #   local <- rws_data_sf
 #   local <- sf::st_sf(local, sf_column_name = "geometry")
@@ -150,8 +147,8 @@ test_that("init makes table", {
 # })
 #
 # test_that("sf data frames stays sf even if sfc written", {
-#   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#   teardown(DBI::dbDisconnect(conn))
+# 
+#   conn <- local_conn()
 #
 #   local <- rws_data_sf
 #   local <- sf::st_sf(local, sf_column_name = "geometry")
@@ -176,8 +173,8 @@ test_that("init makes table", {
 # })
 #
 # test_that("sf data frames reset if delete = TRUE", {
-#   conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#   teardown(DBI::dbDisconnect(conn))
+# 
+#   conn <- local_conn()
 #
 #   local <- rws_data_sf
 #   local <- sf::st_sf(local, sf_column_name = "geometry")

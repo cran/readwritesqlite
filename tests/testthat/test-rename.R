@@ -1,8 +1,6 @@
-context("rename")
-
 test_that("rws_rename_table works", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(list(somedata = readwritesqlite:::rws_data_sf), exists = FALSE, conn = conn)
   expect_identical(rws_list_tables(conn), "somedata")
@@ -13,8 +11,8 @@ test_that("rws_rename_table works", {
 })
 
 test_that("rws_rename_table informative errors", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(list(somedata = readwritesqlite:::rws_data_sf), exists = FALSE, conn = conn)
   expect_identical(rws_list_tables(conn), "somedata")
@@ -34,8 +32,8 @@ test_that("rws_rename_table informative errors", {
 })
 
 test_that("rws_rename_table multiple tables", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(list(somedata = data.frame(y = 2), moredata = data.frame(x = 1)), exists = FALSE, conn = conn)
   expect_identical(rws_list_tables(conn), sort(c("moredata", "somedata")))
@@ -46,8 +44,8 @@ test_that("rws_rename_table multiple tables", {
 })
 
 test_that("rws_rename_table primary key", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   DBI::dbExecute(conn, "CREATE TABLE local (
                   x INTEGER PRIMARY KEY NOT NULL)")
@@ -73,8 +71,8 @@ test_that("rws_rename_table primary key", {
 })
 
 test_that("rws_rename_column works", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(data.frame(x = 1), x_name = "local", exists = FALSE, conn = conn)
   expect_identical(
@@ -92,8 +90,8 @@ test_that("rws_rename_column works", {
 })
 
 test_that("rws_rename_column renames own column", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(data.frame(x = 1), x_name = "local", exists = FALSE, conn = conn)
   expect_identical(
@@ -109,8 +107,8 @@ test_that("rws_rename_column renames own column", {
 })
 
 test_that("rws_rename_column informative errors", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(data.frame(x = 1), x_name = "local", exists = FALSE, conn = conn)
   expect_error(
@@ -124,8 +122,8 @@ test_that("rws_rename_column informative errors", {
 })
 
 test_that("rws_rename_column can't overwrite existing column", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   rws_write(data.frame(x = 1, y = 2), x_name = "local", exists = FALSE, conn = conn)
   expect_error(
@@ -135,8 +133,8 @@ test_that("rws_rename_column can't overwrite existing column", {
 })
 
 test_that("rws_rename_column primary key", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
+
+  conn <- local_conn()
 
   DBI::dbExecute(conn, "CREATE TABLE local (
                   x INTEGER PRIMARY KEY NOT NULL)")

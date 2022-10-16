@@ -1,9 +1,6 @@
-context("dependencies")
-
 test_that("unquoted table names case insensitive in RSQLite", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
-
+  conn <- local_conn()
+  
   local <- data.frame(x = as.character(1:3))
 
   expect_true(DBI::dbCreateTable(conn, "loCal", local))
@@ -43,9 +40,8 @@ test_that("unquoted table names case insensitive in RSQLite", {
 })
 
 test_that("``quoted table names case sensitive in RSQLite", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
-
+  conn <- local_conn()
+  
   local <- data.frame(x = as.character(1:3))
 
   expect_true(DBI::dbCreateTable(conn, "`loCal`", local))
@@ -62,9 +58,8 @@ test_that("``quoted table names case sensitive in RSQLite", {
 })
 
 test_that("[] quoted table names case sensitive in RSQLite", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
-
+  conn <- local_conn()
+  
   local <- data.frame(x = as.character(1:3))
 
   expect_true(DBI::dbCreateTable(conn, "[loCal]", local))
@@ -80,9 +75,8 @@ test_that("[] quoted table names case sensitive in RSQLite", {
 })
 
 test_that("\"\" quoted table names case sensitive in RSQLite", {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
-
+  conn <- local_conn()
+  
   local <- data.frame(x = as.character(1:3))
 
   expect_true(DBI::dbCreateTable(conn, "\"loCal\"", local))
@@ -98,9 +92,8 @@ test_that("\"\" quoted table names case sensitive in RSQLite", {
 })
 
 test_that('"" quoted table names case sensitive in RSQLite', {
-  conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  teardown(DBI::dbDisconnect(conn))
-
+  conn <- local_conn()
+  
   local <- data.frame(x = as.character(1:3))
 
   expect_true(DBI::dbCreateTable(conn, '"loCal"', local))

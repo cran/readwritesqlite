@@ -1,3 +1,12 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# readwritesqlite 0.2.0
+
+- Added `rws_export_gpkg()`.
+- Now R >= 4.0
+- Switched to testthat 3.
+- Previously soft deprecated functions now warn unconditionally.
+
 # readwritesqlite 0.1.2
 
 ## New Features
